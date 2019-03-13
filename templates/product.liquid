@@ -103,6 +103,9 @@
                 </li>
                 {% endif %}
             </ul>
+            <div>
+                <h3>Rating: {{ product.product_rating | round:2 }}/5</h3>
+            </div>
 
             <hr id="variantBreak" class="hr--clear hr--small">
 
@@ -161,13 +164,34 @@
         {% if shop.customer_reviews_enabled and product.customer_reviews.size > 0 %}
         <h4>Customer reviews</h4>
         {% for review in product.customer_reviews limit:5 %}
-        <p>
-            {{ review.content }}
-            <br>
-            <time pubdate datetime="{{ review.created_date | date: '%Y-%m-%d' }}">
-                <em class="text-light">{{ review.created_date | date: format: 'month_day_year' }}</em>
-            </time>
-        </p>
+        <div class="review-block">
+            <label> {{review.author_nickname}} </label>
+            <p>
+                {{ review.content }}                
+            </p>
+            <div>
+                {% for naviIndex in (1..5) %}
+                    {% if forloop.index <= review.value %}
+                        <span class="fa fa-star orange-star"></span>
+                    {% else %}
+                        <span class="fa fa-star"></span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div>
+                <span class="fa fa-thumbs-up"></span>
+                <span style="margin-right: 10px">{{review.likes_number}}</span>
+
+                <span class="fa fa-thumbs-down"></span>
+                <span>{{review.dislikes_number}}</span>
+            </div>
+            <div>
+                <time pubdate datetime="{{ review.created_date | date: '%Y-%m-%d' }}">
+                        <em class="text-light">{{ review.created_date | date: format: 'month_day_year' }}</em>
+                </time>
+            </div>
+
+        </div>
         {% endfor %}
         {% endif %}
 
