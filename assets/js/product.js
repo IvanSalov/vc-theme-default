@@ -1,7 +1,7 @@
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService', '$localStorage',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService, $localStorage) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService', '$localStorage', 'customerReviewsService',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService, $localStorage, customerReviewsService) {
         //TODO: prevent add to cart not selected variation
         // display validator please select property
         // display price range
@@ -47,6 +47,39 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         
         $scope.initAvailableLists = function(lists) {
             $scope.listType = lists.default_list_type;
+        };
+
+        $scope.addReview = function() {
+            var review = {
+                authorNickname: $scope.newReviewAuthor,
+                content: $scope.newReviewContent,
+                value: getRating()
+            };
+
+            customerReviewsService.createReview($scope.selectedVariation.id, review).then( function(response) {
+                alert('done');
+            });
+        };
+
+        function getRating() {
+            var rating = 0;
+            if ($scope.ratingOne) {
+                rating = 1;
+            }
+            if ($scope.ratingTwo) {
+                rating = 2;
+            }
+            if ($scope.ratingThree) {
+                rating = 3;
+            }
+            if ($scope.ratingFour) {
+                rating = 4;
+            }
+            if ($scope.ratingFive) {
+                rating = 5;
+            }
+
+            return rating;
         }
 
         function toDialogDataModel(product, quantity) {
@@ -127,7 +160,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             return _.find(variations, function (x) {
                 return comparePropertyMaps(getVariationPropertyMap(x), selectedPropMap);
             });
-        }
+        };
 
         //Method called from View when user clicks one property value
         $scope.checkProperty = function (property) {
