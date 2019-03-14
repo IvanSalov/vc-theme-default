@@ -194,6 +194,41 @@
         </div>
         {% endfor %}
         {% endif %}
+        {% if shop.customer_reviews_enabled %}
+        <form ng-submit="addReview()">
+            <div class="new-review-block">
+                <h3>{{ 'products.product.customerReview.newReview' | t }}</h3>
+                <div>
+                    <label>{{ 'products.product.customerReview.authorNickname' | t }}</label>
+                    <input type="text" ng-model="newReviewAuthor" name="newReviewAuthor"/>
+                </div>
+                <div>
+                    <label>{{ 'products.product.customerReview.reviewText' | t }}</label>
+                    <textarea ng-model="newReviewContent" name="newReviewContent"></textarea>
+                </div>
+                <div>
+                    <label>{{ 'products.product.customerReview.rate' | t }}</label>
+                    <!--<input ng-model="newReviewRate" type="number" name="newReviewRate"/>-->
+
+                    <div class="star-rating">
+                            <div class="star-rating__wrap">
+                              <input class="star-rating__input" id="star-rating-5" type="radio" name="rating" value="5" data-ng-model="ratingFive">
+                              <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-5" title="5 out of 5 stars"></label>
+                              <input class="star-rating__input" id="star-rating-4" type="radio" name="rating" value="4" data-ng-model="ratingFour">
+                              <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-4" title="4 out of 5 stars"></label>
+                              <input class="star-rating__input" id="star-rating-3" type="radio" name="rating" value="3" data-ng-model="ratingThree">
+                              <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-3" title="3 out of 5 stars"></label>
+                              <input class="star-rating__input" id="star-rating-2" type="radio" name="rating" value="2" data-ng-model="ratingTwo">
+                              <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-2" title="2 out of 5 stars"></label>
+                              <input class="star-rating__input" id="star-rating-1" type="radio" name="rating" value="1" data-ng-model="ratingOne">
+                              <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-1" title="1 out of 5 stars"></label>
+                            </div>
+                      </div>
+                </div>
+                <button type="submit" class="btn btn-clearfix">{{ 'products.product.customerReview.saveReview' | t }}</button>
+            </div>
+        </form>
+        {% endif %}
 
         {% if settings.social_sharing_products %}
         {% include 'social-sharing' %}
