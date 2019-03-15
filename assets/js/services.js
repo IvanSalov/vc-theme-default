@@ -263,13 +263,13 @@ storefrontApp.service('customerReviewsService', ['$http', function ($http) {
             return $http.post('storefrontapi/product/' + productId + '/customerReviews', customerReviewData);
         },
         updateReview: function (productId, customerReviewId, customerReviewData) {
-            return $http.post('storefrontapi/product/' + productId + '/customerReviews/' + customerReviewId, customerReviewData);
+            return $http.put('storefrontapi/product/' + productId + '/customerReviews/' + customerReviewId, customerReviewData);
         },
         deleteReview: function (productId, customerReviewId) {
             return $http.delete('storefrontapi/product/' + productId + '/customerReviews/' + customerReviewId);
         },
         createReviewAssessment: function (productId, customerReviewId, assessmentData) {
-            return $http.post('storefrontapi/product/' + productId + '/customerReviews/' + customerReviewId + '/assessments');
+            return $http.post('storefrontapi/product/' + productId + '/customerReviews/' + customerReviewId + '/assessments', assessmentData);
         },
     }
 }]);

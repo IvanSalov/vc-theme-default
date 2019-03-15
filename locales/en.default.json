@@ -717,7 +717,10 @@
                 "saveReview": "Save review",
                 "authorNickname": "Author nickname",
                 "reviewText": "Review text",
-                "rate": "Rate"
+                "rate": "Rate",
+                "edit": "Edit",
+                "delete": "Delete",
+                "discard": "Discard"
             }
         },
         "compare_list": {

@@ -57,7 +57,69 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             };
 
             customerReviewsService.createReview($scope.selectedVariation.id, review).then( function(response) {
-                alert('done');
+                $scope.newReviewAuthor = null;
+                $scope.newReviewContent = null;
+                voidRating();
+                review.likesNumber = 0;
+                review.dislikesNumber = 0;
+                review.createdDate = new Date();
+                $scope.selectedVariation.customerReviews.push(review);
+            });
+        };
+
+        $scope.range = function(min, max, step) {
+            step = step || 1;
+            var input = [];
+            for (var i = min; i <= max; i += step) {
+                input.push(i);
+            }
+            return input;
+        };
+
+        $scope.likeReview = function(review) {
+            var assessment = {
+                isLike: true
+            };
+
+            customerReviewsService.createReviewAssessment($scope.selectedVariation.id, review.id, assessment).then( function(response) {
+                review.likesNumber++;
+            });
+        };
+
+        $scope.dislikeReview = function(review) {
+            var assessment = {
+                isLike: false
+            };
+
+            customerReviewsService.createReviewAssessment($scope.selectedVariation.id, review.id, assessment).then( function(response) {
+                review.dislikesNumber++;
+            });
+        };
+
+        $scope.editReview = function(review) {
+            $scope.editingReview = review;
+            $scope.editingReviewCopy = {
+                id: review.id,
+                content: review.content
+            };
+        };
+
+        $scope.saveEditedReview = function() {
+            customerReviewsService.updateReview($scope.selectedVariation.id, $scope.editingReview.id, $scope.editingReviewCopy).then( function(response) {
+                $scope.editingReview.content = $scope.editingReviewCopy.content;
+                $scope.editingReview = null;
+                $scope.editingReviewCopy = null;
+            });
+        };
+
+        $scope.discardEditedReview = function() {
+            $scope.editingReview = null;
+            $scope.editingReviewCopy = null;
+        };
+
+        $scope.deleteReview = function(review) {
+            customerReviewsService.deleteReview($scope.selectedVariation.id, review.id).then(function(response) {
+                $scope.selectedVariation.customerReviews.splice($scope.selectedVariation.customerReviews.indexOf(review), 1);
             });
         };
 
@@ -80,6 +142,14 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             }
 
             return rating;
+        }
+
+        function voidRating() {
+            $scope.ratingOne = false;
+            $scope.ratingTwo = false;
+            $scope.ratingThree = false;
+            $scope.ratingFour = false;
+            $scope.ratingFive = false;
         }
 
         function toDialogDataModel(product, quantity) {
